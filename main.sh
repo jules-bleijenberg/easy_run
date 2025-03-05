@@ -1,8 +1,18 @@
 #! /usr/bin/bash
 
-# Print line :]
+# Print a line :]
 print_line () {
 	printf "$@\n";
+}
+
+# Print header
+print_header () {	
+	printf "\n${GREEN} --- $@ --- \n${NO_COLOR}\n";
+}
+
+# Print interactive
+print_interactive_header () {	
+	printf "\n\n\n\n\n\n\n\n${GREEN} --- $@ --- \n\n${NO_COLOR}";
 }
 
 # Copmile c files then run and remove ./a.out
@@ -45,8 +55,7 @@ analyse () {
 	clear;
 	print_line "\n--- NORMINETTE:";
 	norminette -R CheckForbiddenSourceHeader $exercises_path;
-	print_line "\n--- TODO:";
-	print_line "Did you push your code to git???";
+	git status
 }
 
 # Program variables
@@ -54,16 +63,21 @@ main_path=~/".easy_run";
 joined_arguments="";
 
 # Colors
-GREEN='\033[0;32m';
+GREEN='\033[0;92m';
+RED='\033[0;91m';
+OPT_LEFT_COLOR='\033[0;92m';
+OPT_COLOR='\033[0;97m';
 NO_COLOR='\033[0m';
+GRAY='\033[0;92m';
 
 # Program options
-options="hauDtdr"; 
+options="huDEtdr"; 
 is_clearing=1;
 is_downloading=0;
 is_testing=0;
 use_raw_cc=0;
 is_developing=0;
+is_downloading_eval=0;
 
 # Get the options
 while getopts $options option;
@@ -72,9 +86,6 @@ do
 		h) # display Help
 			help_file="$main_path/help.txt";
 			cat $help_file;
-			exit;;
-		a)
-			analyse
 			exit;;
 		u) # Don't clear | u stands for unclear or useless considering I'll never use it :] 
 			is_clearing=0;;
@@ -86,6 +97,8 @@ do
 			is_developing=1;;
 		r) # Set use raw cc
 			use_raw_cc=1;;
+		E) # Is downloading eval
+			is_downloading_eval=1;;
 	esac
 done
 
@@ -133,6 +146,7 @@ if [ $is_downloading -eq 1 ]; then
 	for file in ${files[@]}; do
 		echo "$file"
 	done
+	# Get conformation before creating folders and files
 	read -n 1 -p "Is structure correct? (y/n)" user_input
 	echo ""
 	if [[ $user_input == "y" ]]; then
@@ -144,8 +158,14 @@ if [ $is_downloading -eq 1 ]; then
 			# TO DO - Add 42 header
 			touch $file
 		done
-		echo -e "${GREEN}Files created"
+		echo -e "${GREEN}Files created${NO_COLOR}"
 	fi
+	exit;
+fi
+
+# Install eval in correct folder
+if [ $is_downloading_eval -eq 1 ]; then
+	git clone $joined_arguments ~/sgoinfre/exercises
 	exit;
 fi
 
@@ -168,14 +188,19 @@ fi
 
 open_actions () {
 	# Log file options
-	print_line "\n --- ACTION";
-	print_line "1) Open exercise files";
-	print_line "2) Open test files";
-	print_line "a) Analyse parent folder";
-	print_line "f) Norminette file";
-	print_line "r) Rerun program";
-	print_line "q) Exit";
-	read  -n 1 -p "File selection:" user_input;
+	print_interactive_header "ACTION";
+	print_line "${OPT_LEFT_COLOR}1) ${OPT_COLOR}Open exercise files${NO_COLOR}";
+	print_line "${OPT_LEFT_COLOR}2) ${OPT_COLOR}Open test files${NO_COLOR}";
+	print_line "${OPT_LEFT_COLOR}r) ${OPT_COLOR}Rerun program${NO_COLOR}";
+	print_line "";
+	print_line "${OPT_LEFT_COLOR}a) ${OPT_COLOR}Analyse parent folder${NO_COLOR}";
+	print_line "${OPT_LEFT_COLOR}f) ${OPT_COLOR}Norminette file${NO_COLOR}";
+	print_line "";
+	print_line "${RED}q) ${OPT_COLOR}Exit${NO_COLOR}\n";
+	printf "${NO_COLOR}File selection: ${NO_COLOR}" 
+	tput civis
+	read  -n 1 -p "" user_input;
+	tput cvvis
 	case $user_input in
 		1)
 			vim $exercises_path $tests_path;;
@@ -201,16 +226,16 @@ run_cc_and_log () {
 	if [ $is_clearing -eq 1 ]; then
 		clear;
 	fi
-	print_line " --- FILES:";
+	print_header "FILES";
 	if [ $is_testing -eq 1 ]; then
 		print_line "$exercises_path - $tests_path";
-		print_line "\n --- TEST FILE:";
+		print_header "TEST FILE";
 		cat $tests_path;
-		print_line "\n --- OUTPUT";
+		print_header "OUTPUT";
 		run_cc $exercises_path $tests_path;
 	else
 		print_line "$exercises_path";
-		print_line "\n --- OUTPUT";
+		print_header "OUTPUT";
 		run_cc $exercises_path;
 	fi
 	print_line "\n";
