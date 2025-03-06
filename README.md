@@ -1,3 +1,8 @@
+# Permanent Instalation
+Install and alias program in ~/.zshrc
+```
+git clone https://github.com/jules-bleijenberg/easy_run.git ~/.easy_run && alias er="$HOME/.easy_run/main.sh";
+```
 # Temporary Instalation
 Install and alias program
 ```
