@@ -20,7 +20,7 @@ run_cc () {
 	if [[ $use_raw_cc == 1 ]]; then
 		cc $* && ./a.out && rm ./a.out & pid=$!;
 	else
-		cc $* -Wall -Wextra -Werror && ./a.out && rm ./a.out & pid=$!;
+		cc -lbsd $* -Wall -Wextra -Werror && ./a.out && rm ./a.out & pid=$!;
 	fi
 	# Timeout for infinite loops
 	for i in {1..55}; do
@@ -44,46 +44,50 @@ run_cc () {
 # Check global exercises
 analyse_all () {
 	clear;
-	print_line "\n--- NORMINETTE:";
+	print_header "NORMINETTE";
 	norminette -R CheckForbiddenSourceHeader $folder_path/../;
-	print_line "\n--- TODO:";
-	print_line "Did you push your code to git???";
+	print_header "GIT";
+	git status
 }
 
 # Check exercises
 analyse () {
 	clear;
-	print_line "\n--- NORMINETTE:";
+	print_header "NORMINETTE";
 	norminette -R CheckForbiddenSourceHeader $exercises_path;
-	git status
 }
 
 # Program variables
-main_path=~/".easy_run";
+main_path=~/".easy_run"; #${HOME}/.easy_run # if [ ! ${HOME} ]; quit ; fi ;
 joined_arguments="";
+# cc -c -M ft_strlcat.c | grep -o bsd
+#cflags="-Wall -Wextra -Werror"
+#if [ ${requirebsd} ]
+#then
+	#cflags+=" -lbsd"
+#fi
 
 # Colors
+#ESC='\033['
 GREEN='\033[0;92m';
 RED='\033[0;91m';
 OPT_LEFT_COLOR='\033[0;92m';
 OPT_COLOR='\033[0;97m';
-NO_COLOR='\033[0m';
+NO_COLOR='\033[0;97m';
+#NO_COLOR='\033[0m';
 GRAY='\033[0;92m';
 
 # Program options
-options="huDEtdr"; 
+options="huDEtxr"; 
 is_clearing=1;
-is_downloading=0;
-is_testing=0;
-use_raw_cc=0;
-is_developing=0;
-is_downloading_eval=0;
+is_developing=1;
 
 # Get the options
 while getopts $options option;
 do
 	 case $option in
 		h) # display Help
+			clear
 			help_file="$main_path/help.txt";
 			cat $help_file;
 			exit;;
@@ -93,8 +97,8 @@ do
 			is_downloading=1;;
 		t) # Is testing
 			is_testing=1;;
-		d) # Is developing
-			is_developing=1;;
+		x) # Is developing
+			is_developing=0;;
 		r) # Set use raw cc
 			use_raw_cc=1;;
 		E) # Is downloading eval
@@ -191,14 +195,15 @@ open_actions () {
 	print_interactive_header "ACTION";
 	print_line "${OPT_LEFT_COLOR}1) ${OPT_COLOR}Open exercise files${NO_COLOR}";
 	print_line "${OPT_LEFT_COLOR}2) ${OPT_COLOR}Open test files${NO_COLOR}";
-	print_line "${OPT_LEFT_COLOR}r) ${OPT_COLOR}Rerun program${NO_COLOR}";
 	print_line "";
+	print_line "${OPT_LEFT_COLOR}r) ${OPT_COLOR}Rerun program${NO_COLOR}";
 	print_line "${OPT_LEFT_COLOR}a) ${OPT_COLOR}Analyse parent folder${NO_COLOR}";
 	print_line "${OPT_LEFT_COLOR}f) ${OPT_COLOR}Norminette file${NO_COLOR}";
 	print_line "";
 	print_line "${RED}q) ${OPT_COLOR}Exit${NO_COLOR}\n";
 	printf "${NO_COLOR}File selection: ${NO_COLOR}" 
 	tput civis
+	# trap sigint tput cvvis -> quit
 	read  -n 1 -p "" user_input;
 	tput cvvis
 	case $user_input in
@@ -215,8 +220,7 @@ open_actions () {
 		r)
 			clear;;
 		q)
-			clear
-			exit;;
+			clear;;&
 		*)
 			exit;;
 	esac
