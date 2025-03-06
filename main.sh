@@ -81,6 +81,7 @@ GRAY='\033[0;92m';
 options="huDEtxr"; 
 is_clearing=1;
 is_developing=1;
+is_testing=1;
 
 # Get the options
 while getopts $options option;
@@ -95,8 +96,8 @@ do
 			is_clearing=0;;
 		D) # Is downloading
 			is_downloading=1;;
-		t) # Is testing
-			is_testing=1;;
+		t) # Is not testing
+			is_testing=0;;
 		x) # Is developing
 			is_developing=0;;
 		r) # Set use raw cc

@@ -34,7 +34,7 @@ Teach you the ways of easy run, I shall. The following options, you have:
 
 Options
 
-t) Automatically compiles both exercises and tests folder
+t) Don't compile both exercises and tests folder
 x) Turn interactive mode off
 D) Download structure from intra pdf and create folders and files in ~/Exercises
 E) Clone evaluation (git link) to ~/sgoingfre/exercises
