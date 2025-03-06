@@ -4,18 +4,14 @@ int	ft_str_is_alpha(char *str);
 
 int	main(void)
 {
-	int	a = ft_str_is_alpha("alpha");
-	int	A = ft_str_is_alpha("ALPHA");
-	int	z = ft_str_is_alpha("zxy");
-	int	Z = ft_str_is_alpha("ZXY");
-	int	bracket = ft_str_is_alpha("[");
+	char	val_1[] = "Hello";
+	char	val_2[] = "AZaz";
+	char	val_3[] = "";
 	char	inv_1[] = "Hello world";
-	printf("alpha=%d\n", a);
-	printf("ALPHA=%d\n", A);
-	printf("zxy=%d\n", z);
-	printf("ZXY=%d\n", Z);
-	printf("[=%d\n", bracket);
-	printf("ZXY=%d\n", Z);
-	printf("=%d\n", ft_str_is_alpha(""));
-	printf("%s = %d\n", inv_1, ft_str_is_alpha(inv_1));
+	char	inv_2[] = "[[";
+	printf("1 = %d\n", ft_str_is_alpha(val_1));
+	printf("1 = %d\n", ft_str_is_alpha(val_2));
+	printf("1 = %d\n", ft_str_is_alpha(val_3));
+	printf("0 = %d\n", ft_str_is_alpha(inv_1));
+	printf("0 = %d\n", ft_str_is_alpha(inv_2));
 }
