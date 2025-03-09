@@ -46,8 +46,10 @@ analyse_all () {
 	clear;
 	print_header "NORMINETTE";
 	norminette -R CheckForbiddenSourceHeader $folder_path/../;
-	print_header "GIT";
+	print_header "GIT STATUS";
 	git status
+	print_header "GIT FILES";
+	git ls-files
 }
 
 # Check exercises
@@ -78,7 +80,7 @@ NO_COLOR='\033[0;97m';
 GRAY='\033[0;92m';
 
 # Program options
-options="huDEtxr"; 
+options="hucDEtxr"; 
 is_clearing=1;
 is_developing=1;
 is_testing=1;
@@ -92,7 +94,10 @@ do
 			help_file="$main_path/help.txt";
 			cat $help_file;
 			exit;;
-		u) # Don't clear | u stands for unclear or useless considering I'll never use it :] 
+		u) # Update with git pull
+			git pull -C $main_path
+			exit;;
+		c) # Don't clear | u stands for unclear or useless considering I'll never use it :] 
 			is_clearing=0;;
 		D) # Is downloading
 			is_downloading=1;;
@@ -174,9 +179,20 @@ if [ $is_downloading_eval -eq 1 ]; then
 	exit;
 fi
 
+# Parse paths
+#for joined_argument in ${joined_arguments[@]}; do
+#	echo "$joined_argument"
+#	if [[ -d $joined_argument ]]; then
+#		joined_argument="${joined_argument}/*.c";
+#	fi
+#done
+#for joined_argument in ${joined_arguments[@]}; do
+#	echo "$joined_argument"
+#done
+#exit
 given_path="$( cut -d ' ' -f 1 <<< "$joined_arguments" )";
 given_path=$(readlink -f "$given_path");
-# If path doesn't end with .c -> add every .c file in folder
+# If path is folder -> add every .c file in folder
 if [[ -d $given_path ]]; then
 	folder_path=$given_path;
 	given_path="${given_path}/*.c";

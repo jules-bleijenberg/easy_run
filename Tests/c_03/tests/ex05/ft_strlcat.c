@@ -21,9 +21,9 @@ int	main(void)
 	char dest10[9] = "ABCD";
 	char src5[] = "EF";
 
-	printf("%d - %s =  %zu - %s\n", ft_strlcat(dest1, src1, 0), dest1, strlcat(dest2, src1, 0), dest2);
-	printf("%d - %s =  %zu - %s\n", ft_strlcat(dest3, src2, 1), dest3, strlcat(dest4, src2, 1), dest4);
-	printf("%d - %s =  %zu - %s\n", ft_strlcat(dest5, src3, 2), dest5, strlcat(dest6, src3, 2), dest6);
-	printf("%d - %s =  %zu - %s\n", ft_strlcat(dest7, src4, 6), dest7, strlcat(dest8, src4, 6), dest8);
-	printf("%d - %s =  %zu - %s\n", ft_strlcat(dest9, src5, 7), dest9, strlcat(dest10, src5, 7), dest10);
+	printf("%zu - %s =  %d - %s\n", strlcat(dest1, src1, 0), dest1, ft_strlcat(dest2, src1, 0), dest2);
+	printf("%zu - %s =  %d - %s\n", strlcat(dest3, src2, 1), dest3, ft_strlcat(dest4, src2, 1), dest4);
+	printf("%zu - %s =  %d - %s\n", strlcat(dest5, src3, 5), dest5, ft_strlcat(dest6, src3, 5), dest6);
+	printf("%zu - %s =  %d - %s\n", strlcat(dest7, src4, 6), dest7, ft_strlcat(dest8, src4, 6), dest8);
+	printf("%zu - %s =  %d - %s\n", strlcat(dest9, src5, 9), dest9, ft_strlcat(dest10, src5, 9), dest10);
 }

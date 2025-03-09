@@ -34,12 +34,13 @@ Teach you the ways of easy run, I shall. The following options, you have:
 
 Options
 
+u) Upgrade easy run and exit :]
 t) Don't compile both exercises and tests folder
 x) Turn interactive mode off
 D) Download structure from intra pdf and create folders and files in ~/Exercises
 E) Clone evaluation (git link) to ~/sgoingfre/exercises
 r) Compile files without -Werror, etc.
-u) Don't clear screen after command
+c) Don't clear screen after command
 h) Print this help and exit
 
 Useful tips

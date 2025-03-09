@@ -5,10 +5,9 @@ char	*ft_strcat(char *dest, char *src);
 
 int	main(void)
 {
-	char test1[100] = "ABCD";
-	char test2[] = "EF";
-	char test3[100] = "ABCD";
-	char test4[] = "EF";
-	printf("%s\n", ft_strcat(test1, test2));
-	printf("%s\n", strcat(test3, test4));
+	char dest1[100] = "ABCD";
+	char src2[] = "EF";
+	char dest3[100] = "ABCD";
+	char src4[] = "EF";
+	printf("%s = %s\n", strcat(dest3, src4), ft_strcat(dest1, src2));
 }
