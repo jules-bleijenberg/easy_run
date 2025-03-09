@@ -84,6 +84,7 @@ options="hucDEtxr";
 is_clearing=1;
 is_developing=1;
 is_testing=1;
+is_folder=0;
 
 # Get the options
 while getopts $options option;
@@ -194,6 +195,7 @@ given_path="$( cut -d ' ' -f 1 <<< "$joined_arguments" )";
 given_path=$(readlink -f "$given_path");
 # If path is folder -> add every .c file in folder
 if [[ -d $given_path ]]; then
+	is_folder=1;
 	folder_path=$given_path;
 	given_path="${given_path}/*.c";
 fi
@@ -211,11 +213,15 @@ open_actions () {
 	# Log file options
 	print_interactive_header "ACTION";
 	print_line "${OPT_LEFT_COLOR}1) ${OPT_COLOR}Open exercise files${NO_COLOR}";
-	print_line "${OPT_LEFT_COLOR}2) ${OPT_COLOR}Open test files${NO_COLOR}";
+	if [ $is_testing -eq 1 ]; then
+		print_line "${OPT_LEFT_COLOR}2) ${OPT_COLOR}Open test files${NO_COLOR}";
+	fi
 	print_line "";
 	print_line "${OPT_LEFT_COLOR}r) ${OPT_COLOR}Rerun program${NO_COLOR}";
-	print_line "${OPT_LEFT_COLOR}a) ${OPT_COLOR}Analyse parent folder${NO_COLOR}";
-	print_line "${OPT_LEFT_COLOR}f) ${OPT_COLOR}Norminette file${NO_COLOR}";
+	if [ $is_folder -eq 1 ]; then
+		print_line "${OPT_LEFT_COLOR}a) ${OPT_COLOR}Analyse parent folder${NO_COLOR}";
+		print_line "${OPT_LEFT_COLOR}f) ${OPT_COLOR}Norminette file${NO_COLOR}";
+	fi
 	print_line "";
 	print_line "${RED}q) ${OPT_COLOR}Exit${NO_COLOR}\n";
 	printf "${NO_COLOR}File selection: ${NO_COLOR}" 
