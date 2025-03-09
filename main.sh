@@ -95,7 +95,7 @@ do
 			cat $help_file;
 			exit;;
 		u) # Update with git pull
-			git pull -C $main_path
+			git -C $main_path pull
 			exit;;
 		c) # Don't clear | u stands for unclear or useless considering I'll never use it :] 
 			is_clearing=0;;
