@@ -142,6 +142,10 @@ if [ $is_downloading -eq 1 ]; then
 	{if ($1 == "Turn-in") printf "%s/Exercises/%s/exercises/%s\n", ENVIRON["HOME"], directory, $4; \
 	else if (NR==2) directory=gensub(/ /, "_", "g", tolower($0))}' $main_path/tmp_subject.txt))
 
+	test_folders=($(awk 'BEGIN {directory="c_00";} \
+	{if ($1 == "Turn-in") printf "%s/Exercises/%s/tests/%s\n", ENVIRON["HOME"], directory, $4; \
+	else if (NR==2) directory=gensub(/ /, "_", "g", tolower($0))}' $main_path/tmp_subject.txt))
+
 	files=($(awk 'BEGIN {directory="c_00"; current_exercise="ex00/"} \
 	{if ($1 == "Turn-in") current_exercise=$4; \
 	else if ($1 == "Files") printf "%s/Exercises/%s/exercises/%s%s\n", ENVIRON["HOME"], directory, current_exercise, $6; \
@@ -165,8 +169,14 @@ if [ $is_downloading -eq 1 ]; then
 			mkdir -p $(echo "$str" | sed 's/.\{1\}$//')
 			# sed removes last char, because bash programming is bash programming
 		done
+		for str in ${test_folders[@]}; do 
+			mkdir -p $(echo "$str" | sed 's/.\{1\}$//')
+			# sed removes last char, because bash programming is bash programming
+		done
 		for file in ${files[@]}; do 
 			# TO DO - Add 42 header
+			touch $file
+			file=$(readlink -f "$file" | sed -e 's/exercises/tests/g');
 			touch $file
 		done
 		echo -e "${GREEN}Files created${NO_COLOR}"
