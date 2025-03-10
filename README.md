@@ -1,3 +1,5 @@
+I highly recommend writing your own tests, because it's good practice. Also most of my tests don't catch all edge cases, so don't rely on them entirely
+
 # Permanent Instalation
 Install and alias program in ~/.zshrc
 ```
